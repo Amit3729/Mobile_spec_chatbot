@@ -1,0 +1,54 @@
+# ------------------------
+# Core Backend
+# ------------------------
+fastapi
+uvicorn
+
+# ------------------------
+# Data Processing
+# ------------------------
+pandas
+numpy
+
+# ------------------------
+# MongoDB
+# ------------------------
+pymongo
+
+# ------------------------
+# Vector Database
+# ------------------------
+qdrant-client
+
+# ------------------------
+# Embeddings
+# ------------------------
+sentence-transformers
+
+# ------------------------
+# RAG Framework
+# ------------------------
+llama-index
+llama-index-vector-stores-qdrant
+llama-index-embeddings-huggingface
+
+# ------------------------
+# Redis Cache
+# ------------------------
+redis
+
+# ------------------------
+# LLM Providers
+# ------------------------
+groq
+
+# ------------------------
+# Environment Variables
+# ------------------------
+python-dotenv
+
+# ------------------------
+# Utilities
+# ------------------------
+tqdm
+requests
