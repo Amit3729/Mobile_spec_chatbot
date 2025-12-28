@@ -8,6 +8,7 @@ from feature_engineering import (
     create_battery_category,
     build_description,
 )
+from app.services.mongo_service import MongoService
 
 DATA_PATH = '/Users/spkunwar/Desktop/untitled folder/Mobile_spec_chatbot/my-product-rag-app/data/Mobiles Dataset (2025).csv'
 
@@ -97,6 +98,12 @@ def main():
 
     print(df.head())
     save_clean_csv(df, 'data/clean_data.csv')
+
+    #mongodb setup
+    mongo = MongoService()
+    mongo.create_indexes()
+    mongo.insert_dataframe(df)
+    print('Total record in MongoDB:', mongo.count_documents())
 
 if __name__ == '__main__':
     main()

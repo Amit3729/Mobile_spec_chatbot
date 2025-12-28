@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-product-rag-app"
+version = "0.1.0"
+description = "Mobile spec chatbot RAG app"
+requires-python = ">=3.8"
+
+# Optional: your dependencies
+# dependencies = ["pandas", "pymongo", ...]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]

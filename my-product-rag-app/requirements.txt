@@ -52,3 +52,4 @@ python-dotenv
 # ------------------------
 tqdm
 requests
+python-dotenv
