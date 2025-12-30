@@ -11,7 +11,7 @@ class MongoService:
         self.client = MongoClient(os.getenv('MONGODB_URI'))
         self.db = self.client[os.getenv('MONGODB_DB')]
         self.collection = self.db[os.getenv('MONGODB_COLLECTION')]
-    
+        self.create_indexes()
     def insert_dataframe(self,df:pd.DataFrame):
         records = df.to_dict(orient='records')
         if not records:
