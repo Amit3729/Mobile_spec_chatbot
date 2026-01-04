@@ -1,6 +1,7 @@
 import os
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
+from qdrant_client.models import NearestQuery
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -8,7 +9,7 @@ load_dotenv()
 
 class RAGService:
     def __init__(self,
-                 collection_name:str = 'mobile-spec',
+                 collection_name:str = 'mobile-specs',
                  embedding_model:str = 'all-MiniLM-L6-v2',
                  top_k: int = 5):
         self.collection_name = collection_name
@@ -28,12 +29,12 @@ class RAGService:
     def retrive(self, query):
         query_vector = self.embbeder.encode(query).tolist()
 
-        search_result = self.qdrant.search(
+        search_result = self.qdrant.query_points(
             collection_name =self.collection_name,
-            query_vector = query_vector,
-            limit=self.top_k
-        )
-        documents = [hit.playload for hit in search_result]
+            query= query_vector,
+            limit=5
+        ).points
+        documents = [hit.payload for hit in search_result]
         return documents
     #Build Promt for LLM
     def build_promt(self,query:str,documents: list)->str:
