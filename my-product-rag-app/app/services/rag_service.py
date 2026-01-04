@@ -3,6 +3,9 @@ from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.models import NearestQuery
 from groq import Groq
+
+from app.services.cache_service import CacheService
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,6 +17,7 @@ class RAGService:
                  top_k: int = 5):
         self.collection_name = collection_name
         self.top_k = top_k
+        self.cache = CacheService()
 
         #Embedding model
         self.embbeder = SentenceTransformer(embedding_model)
@@ -61,10 +65,17 @@ Answer:
     
     #Generate final Answer
     def answer(self, query):
+        cached_response = self.cache.check(prompt= query)
+        if cached_response:
+            print('Cache hit returning cached response')
+            return cached_response
+        print('CACHE MISS')
         documents = self.retrive(query)
 
         if not documents:
-            return "Sorry, I couldn't find revelent information."
+            no_info_response = "Sorry, I couldn't find revelent information."
+            self.cache.store(prompt=query, response=no_info_response)
+            return no_info_response
         
         prompt = self.build_promt(query,documents)
 
@@ -76,4 +87,6 @@ Answer:
 
         )
 
-        return response.choices[0].message.content
+        answer_text = response.choices[0].message.content
+        self.cache.store(prompt=query, response=answer_text)
+        return answer_text
